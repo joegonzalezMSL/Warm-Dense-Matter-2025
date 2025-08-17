@@ -10,6 +10,8 @@ region box block 0 2 0 2 0 2
 create_box 1 box
 create_atoms 1 box
 
+mass 			1 63.5460
+
 # Define potential
 pair_style eam/alloy
 pair_coeff 		* * /content/Warm-Dense-Matter-2025/lammps-minimal/potential/Cu_zhou.eam.alloy Cu
