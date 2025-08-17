@@ -15,7 +15,7 @@ create_atoms 	1 box
 
 # Define potential
 pair_style 		eam/alloy
-pair_coeff 		* * Cu_zhou.eam.alloy Cu
+pair_coeff 		* * /content/lammps-minimal/Cu_zhou.eam.alloy Cu
 
 compute     	atom_energy all pe/atom
 compute      	Msd all  msd 
