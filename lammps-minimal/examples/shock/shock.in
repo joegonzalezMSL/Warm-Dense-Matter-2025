@@ -32,7 +32,7 @@ variable 		exit equal is_file(STOP)
 
 ## Potential specification
 pair_style      eam/alloy
-pair_coeff      * * Cu_zhou.eam.alloy Cu
+pair_coeff      * * /content/Warm-Dense-Matter-2025/lammps-minimal/potential/Cu_zhou.eam.alloy Cu
 
 timestep 		${tstep}
 neighbor        2.0 bin

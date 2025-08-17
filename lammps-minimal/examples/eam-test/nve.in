@@ -12,7 +12,7 @@ create_atoms 1 box
 
 # Define potential
 pair_style eam/alloy
-pair_coeff * * Cu_zhou.eam.alloy Cu
+pair_coeff 		* * /content/Warm-Dense-Matter-2025/lammps-minimal/potential/Cu_zhou.eam.alloy Cu
 
 # Define other simulation parameters (temperature, timestep, etc.)
 velocity all create 300 12345
