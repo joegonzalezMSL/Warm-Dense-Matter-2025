@@ -16,7 +16,7 @@ create_atoms 1 box
 
 # 3. Define interatomic potential (EAM for Cu)
 pair_style eam
-pair_coeff * * Cu_u3.eam
+pair_coeff * * Cu_mishin1.eam.alloy
 
 # 4. Neighbor list settings
 neighbor 2.0 bin
@@ -36,14 +36,10 @@ unfix melt
 # -----------------------------
 # 7. Cooling
 # -----------------------------
-variable Tstart equal 2000      # Start temperature (K)
+variable Tstart equal 2300      # Start temperature (K)
 variable Tend equal 300         # End temperature (K)
-variable rate equal 0.1         # K/step cooling rate (adjustable)
 
 fix cool all npt temp ${Tstart} ${Tend} 0.1 iso 0 0 1.0
-
-# Optional: define time-dependent temperature ramp
-# variable Tcool equal ramp(${Tstart}, ${Tend})
 
 run 20000  # adjust to control final T and cooling rate
 
