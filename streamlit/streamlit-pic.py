@@ -6,6 +6,16 @@ from scipy.sparse.linalg import spsolve
 import io
 import time
 
+"""
+Create Your Own Plasma PIC Simulation (With Python)
+Philip Mocz (2020) Princeton University, @PMocz
+
+Simulate the 1D Two-Stream Instability
+Code calculates the motions of electron under the Poisson-Maxwell equation
+using the Particle-In-Cell (PIC) method
+
+"""
+
 def getAcc(pos, Nx, boxsize, n0, Gmtx, Lmtx):
     """
     Calculate the acceleration on each particle due to electric field
