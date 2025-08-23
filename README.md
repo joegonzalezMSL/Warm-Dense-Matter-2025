@@ -1,11 +1,2 @@
 # Warm-Dense-Matter-2025
-
-## Hugoniot
-
-## Melting
-Large-scale solid-liquid coexistence simulations to determine the melting temperature of Cu.
-
-## Shock
-
-## Phase Transition
-
+This is the repository for the python codes, jupyter notebooks and other computer related documents that accompany the lectures and homework for the course
