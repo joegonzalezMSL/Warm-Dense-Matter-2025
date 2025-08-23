@@ -3,7 +3,8 @@ This is the repository for the python codes, jupyter notebooks and other materia
 
 
 ## LAMMPS                
-Directory containing simple Molecular Dynamics Simulations
+Directory containing simple Molecular Dynamics Simulations. 
+install_run_lammps_colab.ipynb - Short jupyter notebook on how to install and run LAMMPS in a Google Colab session.
 
 ## streamlit             
 Directory containing simple apps demonstrating some of the many capabilities offered by Streamlit. This will serve as one of your reference for building apps to complete the homework during the course.
