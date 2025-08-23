@@ -12,4 +12,6 @@ Directory containing simple Molecular Dynamics Simulations.
 ## streamlit             
 Directory containing simple apps demonstrating some of the many capabilities offered by Streamlit. This will serve as one of your reference for building apps to complete the homework during the course.
 
-
+* mass_radius.py - Simple streamlit app to display static figures. In this case, display the Mass-Radius relation and Pressure-Density Hugoniot of specific elements
+* pic-streamlit.py - App to demonstrate how to include simulation code into the streamlit app. In this case, it is a 1D plasma instability simulation.
+* sph-streamlit.py - App to demonstrate how to include simulation code into the streamlit app. In this case, it is a Smoothed-Particle Hydrodynamics simulation of a collapsing star. 
