@@ -5,6 +5,8 @@ This is the repository for the python codes, jupyter notebooks and other materia
 ## LAMMPS                
 Directory containing simple Molecular Dynamics Simulations. 
 
+NPT - Directory with a simple LAMMPS input deck to compress copper to 20 GPa and hold at 300 K.
+
 install_run_lammps_colab.ipynb - Short jupyter notebook on how to install and run LAMMPS in a Google Colab session.
 
 ## streamlit             
