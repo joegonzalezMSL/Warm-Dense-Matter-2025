@@ -2,10 +2,10 @@
 This is the repository for the python codes, jupyter notebooks and other material related to the computational portion of the the course.
 
 
-##LAMMPS                
+## LAMMPS                
 Directory containing simple Molecular Dynamics Simulations
 
-##streamlit             
+## streamlit             
 Directory containing simple apps demonstrating some of the many capabilities offered by Streamlit. This will serve as one of your reference for building apps to complete the homework during the course.
 
 
