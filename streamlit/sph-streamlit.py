@@ -5,13 +5,33 @@ from scipy.special import gamma
 import io
 import time
 
-# SPH Simulation Functions (from provided code)
+## Create Your Own Smoothed-Particle-Hydrodynamics Simulation (With Python)
+##Philip Mocz (2020) Princeton University, @PMocz
+
+##Simulate the structure of a star with SPH
+
 def W(x, y, z, h):
+    """
+    Gausssian Smoothing kernel (3D)
+        x     is a vector/matrix of x positions
+        y     is a vector/matrix of y positions
+        z     is a vector/matrix of z positions
+        h     is the smoothing length
+        w     is the evaluated smoothing function
+    """
     r = np.sqrt(x**2 + y**2 + z**2)
     w = (1.0 / (h * np.sqrt(np.pi))) ** 3 * np.exp(-(r**2) / h**2)
     return w
 
 def gradW(x, y, z, h):
+    """
+    Gradient of the Gausssian Smoothing kernel (3D)
+    x     is a vector/matrix of x positions
+    y     is a vector/matrix of y positions
+    z     is a vector/matrix of z positions
+    h     is the smoothing length
+    wx, wy, wz     is the evaluated gradient
+    """
     r = np.sqrt(x**2 + y**2 + z**2)
     n = -2 * np.exp(-(r**2) / h**2) / h**5 / (np.pi) ** (3 / 2)
     wx = n * x
@@ -20,40 +40,83 @@ def gradW(x, y, z, h):
     return wx, wy, wz
 
 def getPairwiseSeparations(ri, rj):
+    """
+    Get pairwise desprations between 2 sets of coordinates
+    ri    is an M x 3 matrix of positions
+    rj    is an N x 3 matrix of positions
+    dx, dy, dz   are M x N matrices of separations
+    """
     M = ri.shape[0]
     N = rj.shape[0]
+    # positions ri = (x,y,z)
     rix = ri[:, 0].reshape((M, 1))
     riy = ri[:, 1].reshape((M, 1))
     riz = ri[:, 2].reshape((M, 1))
+    # other set of points positions rj = (x,y,z)
     rjx = rj[:, 0].reshape((N, 1))
     rjy = rj[:, 1].reshape((N, 1))
     rjz = rj[:, 2].reshape((N, 1))
+    # matrices that store all pairwise particle separations: r_i - r_j
     dx = rix - rjx.T
     dy = riy - rjy.T
     dz = riz - rjz.T
     return dx, dy, dz
 
 def getDensity(r, pos, m, h):
+    """
+    Get Density at sampling locations from SPH particle distribution
+    r     is an M x 3 matrix of sampling locations
+    pos   is an N x 3 matrix of SPH particle positions
+    m     is the particle mass
+    h     is the smoothing length
+    rho   is M x 1 vector of densities
+    """
     M = r.shape[0]
     dx, dy, dz = getPairwiseSeparations(r, pos)
     rho = np.sum(m * W(dx, dy, dz, h), 1).reshape((M, 1))
     return rho
 
 def getPressure(rho, k, n):
+    """
+    Equation of State
+    rho   vector of densities
+    k     equation of state constant
+    n     polytropic index
+    P     pressure
+    """
     P = k * rho ** (1 + 1 / n)
     return P
 
 def getAcc(pos, vel, m, h, k, n, lmbda, nu):
+    """
+    Calculate the acceleration on each SPH particle
+    pos   is an N x 3 matrix of positions
+    vel   is an N x 3 matrix of velocities
+    m     is the particle mass
+    h     is the smoothing length
+    k     equation of state constant
+    n     polytropic index
+    lmbda external force constant
+    nu    viscosity
+    a     is N x 3 matrix of accelerations
+    """
     N = pos.shape[0]
+    # Calculate densities at the position of the particles
     rho = getDensity(pos, pos, m, h)
+    # Get the pressures
     P = getPressure(rho, k, n)
+    # Get pairwise distances and gradients
     dx, dy, dz = getPairwiseSeparations(pos, pos)
     dWx, dWy, dWz = gradW(dx, dy, dz, h)
+    # Add Pressure contribution to accelerations
     ax = -np.sum(m * (P / rho**2 + P.T / rho.T**2) * dWx, 1).reshape((N, 1))
     ay = -np.sum(m * (P / rho**2 + P.T / rho.T**2) * dWy, 1).reshape((N, 1))
     az = -np.sum(m * (P / rho**2 + P.T / rho.T**2) * dWz, 1).reshape((N, 1))
+    # pack together the acceleration components
     a = np.hstack((ax, ay, az))
+    # Add external potential force
     a -= lmbda * pos
+    # Add viscosity
     a -= nu * vel
     return a
 
@@ -73,7 +136,9 @@ def run_simulation(N, tEnd, dt, M, R, h, k, nu, plot_every):
         m = M / N
         pos = np.random.randn(N, 3)
         vel = np.zeros(pos.shape)
+        # calculate initial gravitational accelerations
         acc = getAcc(pos, vel, m, h, k, n, lmbda, nu)
+        # number of timesteps
         Nt = int(np.ceil(tEnd / dt))
         
         rr = np.zeros((100, 3))
@@ -95,12 +160,18 @@ def run_simulation(N, tEnd, dt, M, R, h, k, nu, plot_every):
             times.append(t)
         
         save_frame()  # initial frame
-        
+
+        # Simulation Main Loop
         for i in range(Nt):
+            # (1/2) kick
             vel += acc * dt / 2
+            # drift
             pos += vel * dt
+            # update accelerations
             acc = getAcc(pos, vel, m, h, k, n, lmbda, nu)
+            # (1/2) kick
             vel += acc * dt / 2
+            # update time
             t += dt
             if (i + 1) % plot_every == 0 or i == Nt - 1:
                 save_frame()
@@ -146,8 +217,7 @@ def run_simulation(N, tEnd, dt, M, R, h, k, nu, plot_every):
         return None, None
 
 
-# Title displayed on webapp first
-# st.markdown('### This is a simple web app built to demonstrate a 1D Plasma instability simulation')
+## Title displayed on webapp first
 st.title('''This is a simple web app built to simulate a star using Smmothed Particle Hydrodynamics''')
 
 ## Write some descriptive text about what your web app does using st.write() or st.markdown()
@@ -213,7 +283,7 @@ with st.sidebar:
     speed = st.number_input("Speed of animation", min_value=0.0, max_value=1.0, value=0.2, step=0.05, format="%f")
     runSim = st.button("Run Simulation")
 
-# Run simulation button
+# Run after simulation button is clicked
 if runSim:
     with st.spinner("Running simulation and generating images..."):
         particle_images, density_images = run_simulation(N, tEnd, dt, M, R, h, k, nu, int(plot_every))
