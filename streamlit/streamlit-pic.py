@@ -6,16 +6,14 @@ from scipy.sparse.linalg import spsolve
 import io
 import time
 
-"""
-Create Your Own Plasma PIC Simulation (With Python)
-Philip Mocz (2020) Princeton University, @PMocz
+# Create Your Own Plasma PIC Simulation (With Python)
+# Philip Mocz (2020) Princeton University, @PMocz
 
-Simulate the 1D Two-Stream Instability
-Code calculates the motions of electron under the Poisson-Maxwell equation
-using the Particle-In-Cell (PIC) method
+# Simulate the 1D Two-Stream Instability
+# Code calculates the motions of electron under the Poisson-Maxwell equation
+# using the Particle-In-Cell (PIC) method
 
-"""
-
+## simulations from Philip Mocz
 def getAcc(pos, Nx, boxsize, n0, Gmtx, Lmtx):
     """
     Calculate the acceleration on each particle due to electric field
@@ -48,7 +46,7 @@ def getAcc(pos, Nx, boxsize, n0, Gmtx, Lmtx):
         st.error(f"Error in getAcc: {str(e)}")
         return None
 
-def run_simulation(N, dt, vb, tEnd, plot_freq):
+def run_simulation(N, dt, vb, tEnd, plot_freq,c1,c2):
     """Plasma PIC simulation with animation frames"""
     try:
         Nx = 400  # Number of mesh cells
@@ -113,12 +111,12 @@ def run_simulation(N, dt, vb, tEnd, plot_freq):
             # Generate plot for every plot_freq timesteps
             if i % plot_freq == 0 or i == Nt - 1:
                 fig, ax = plt.subplots(figsize=(5, 4), dpi=80)
-                ax.scatter(pos[0:Nh], vel[0:Nh], s=0.4, color="blue", alpha=0.5)
-                ax.scatter(pos[Nh:], vel[Nh:], s=0.4, color="red", alpha=0.5)
+                ax.scatter(pos[0:Nh], vel[0:Nh], s=0.5, color=c1, alpha=0.5)
+                ax.scatter(pos[Nh:], vel[Nh:], s=0.5, color=c2, alpha=0.5)
                 ax.set_xlim(0, boxsize)
                 ax.set_ylim(-6, 6)
-                ax.set_xlabel("x")
-                ax.set_ylabel("v")
+                ax.set_xlabel("Position")
+                ax.set_ylabel("Velocity")
                 ax.set_title(f"Two-Stream Instability at t={t:.1f}")
 
                 # Save plot to bytes
@@ -133,23 +131,94 @@ def run_simulation(N, dt, vb, tEnd, plot_freq):
         st.error(f"Error in run_simulation: {str(e)}")
         return None
 
-# Streamlit app
-st.title("Plasma PIC Simulation: Two-Stream Instability with Animation")
 
-# Sliders for parameters
-dt = st.slider("Timestep (dt)", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
-vb = st.slider("Beam Velocity (vb)", min_value=1.0, max_value=10.0, value=2.0, step=0.1)
-N = st.slider("Number of Particles (N)", min_value=40000, max_value=100000, value=40000, step=1000)
-tEnd = st.slider("End Time (tEnd)", min_value=50, max_value=1000, value=500, step=10)
-plot_freq = st.slider("Plot Frequency (timesteps per frame)", min_value=1, max_value=100, value=10, step=1)
+### Begin the streamlit part
+## The order of commands is directly related to placement in the app
 
-# Placeholder for animation
+# Title displayed on webapp first
+# st.markdown('### This is a simple web app built to demonstrate a 1D Plasma instability simulation')
+st.title('''This is a simple web app built to demonstrate a 1D Plasma instability simulation''')
+
+## Write some descriptive text about what your web app does using st.write() or st.markdown()
+st.markdown('### 1D Plasma Instability Simulation - Philip Mocz @PMocz - Princeton University')
+## multi line description, verbatim
+st.write("""
+    Simulate the 1D Instability of two electron beams traveling opposite to eachother.
+    Code calculates the motions of electron under the Poisson-Maxwell equation
+    using the Particle-In-Cell (PIC) method
+
+""")
+
+## streamlit can accept Latex formated text to display inline equations as well as separate equations
+latext = r'''
+Consider a one-dimensional system of electrons in an
+unmagnetized uniform medium of ions. The electrons will be described by
+${N}$ particles, indexed by ${i}$, each having a position ${r_i}$ and velocity ${v_i}$
+
+The electrons feel an acceleration $a_{i}$ which is due to the electric field E at
+the location of the particle. The equations of motion for the electrons are
+given by:
+$$ 
+\frac{d r_{i}}{dt}=v_{i}
+$$
+$$
+\frac{d v_{i}}{dt}=a_{i} = -E(r_{i})
+$$ 
+
+What remains to be done is to calculate the electric field ${E}$, which depends
+on the number density ${n}$ of the electrons. The electric field ${E}$ is defined as
+the negative gradient of the electric potential $\phi$, which is given by
+Poisson's equation sourced by the density:
+
+$$
+E(x) = -\frac{d \phi(x)}{dx}
+$$
+
+$$
+\frac{d^2 \phi(x)}{dx^2}=n-n{_0}
+$$
+
+where $n{_0}$ is the average electron density (a constant).
+The Particle-In-Cell (PIC) Method computes the density and
+subsequently the potential and electric field on a mesh. Hence it is called
+a particle-mesh method. The electric field is then extrapolated onto the
+location of the particles in order to advance them. 
+
+'''
+st.write(latext)
+
+## Streamlit allows the embeding of hyperlinks, use these to provide citations or for guiding 
+## the reader to learn more information
+url = "https://medium.com/@philip-mocz/create-your-own-plasma-pic-simulation-with-python-39145c66578b"
+st.write("See more detailed information on the PIC code by Philip on [Medium](%s)" %url)
+
+
+## Sliders and text boxes to accept parameters to control the simulation
+## they are stored in the sidebar to keep content in focus. They can also 
+## be put in the main display by removing ".sidebar." from each of the below
+st.sidebar.title("Define simulation parameters")
+dt = st.sidebar.slider("Timestep (dt)", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
+vb = st.sidebar.slider("Beam Velocity (vb)", min_value=1.0, max_value=10.0, value=2.0, step=0.1)
+N  = st.sidebar.number_input(
+    "Number of particles", value=10000,step=10000, placeholder="Type a number..."
+)
+tEnd  = st.sidebar.number_input(
+    "Total simulation time to run", value=500,step=10, placeholder="Type a number..."
+)
+plot_freq = st.sidebar.slider("Plot Frequency (timesteps per frame)", min_value=1, max_value=100, value=10, step=1)
+
+c1 = st.sidebar.color_picker("Pick A Color for Stream 1", "#00f900")
+c2 = st.sidebar.color_picker("Pick A Color for Stream 2", "#8300F9")
+
+runSim = st.sidebar.button("Run Simulation")
+
+## create a container for the animation
 image_placeholder = st.empty()
 
-# Run simulation when button is clicked
-if st.button("Run Simulation"):
+## Run simulation when button is clicked
+if runSim:
     with st.spinner("Running simulation and generating animation..."):
-        image_bytes = run_simulation(N, dt, vb, tEnd, plot_freq)
+        image_bytes = run_simulation(N, dt, vb, tEnd, plot_freq,c1,c2)
         if image_bytes:
             st.write(f"Generated {len(image_bytes)} frames for animation")
             # Display animation
