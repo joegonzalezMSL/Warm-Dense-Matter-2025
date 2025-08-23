@@ -1,2 +1,11 @@
 # Warm-Dense-Matter-2025
-This is the repository for the python codes, jupyter notebooks and other computer related documents that accompany the lectures and homework for the course
+This is the repository for the python codes, jupyter notebooks and other material related to the computational portion of the the course.
+
+
+##LAMMPS                
+Directory containing simple Molecular Dynamics Simulations
+
+##streamlit             
+Directory containing simple apps demonstrating some of the many capabilities offered by Streamlit. This will serve as one of your reference for building apps to complete the homework during the course.
+
+
