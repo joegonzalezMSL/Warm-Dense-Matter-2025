@@ -5,9 +5,9 @@ This is the repository for the python codes, jupyter notebooks and other materia
 ## LAMMPS                
 Directory containing simple Molecular Dynamics Simulations. 
 
-* Cu - Directory with log files from molecular dynamics simulations of copper at 1Mbar and 4000K to 10,000K
-* Pt - Directory with log files from molecular dynamics simulations of platinum at 1Mbar and 4000K to 10,000K
-* Au - Directory with log files from molecular dynamics simulations of gold at 1Mbar and 4000K to 10,000K
+* Cu - Directory with log files from molecular dynamics simulations of copper at 1Mbar and 3000K to 10,000K
+* Pt - Directory with log files from molecular dynamics simulations of platinum at 1Mbar and 3000K to 10,000K
+* Au - Directory with log files from molecular dynamics simulations of gold at 1Mbar and 3000K to 10,000K
 
 * install_run_lammps_colab.ipynb - Short jupyter notebook on how to install and run LAMMPS in a Google Colab session.
 
