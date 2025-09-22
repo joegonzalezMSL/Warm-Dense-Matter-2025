@@ -18,9 +18,11 @@ Directory containing simple apps demonstrating some of the many capabilities off
 * pic-streamlit.py - App to demonstrate how to include simulation code into the streamlit app. In this case, it is a 1D plasma instability simulation.
 * sph-streamlit.py - App to demonstrate how to include simulation code into the streamlit app. In this case, it is a Smoothed-Particle Hydrodynamics simulation of a collapsing star. 
 
+Below is a listing of the files and the directory structure. These are the files you can use to build your homework for this lecture (9.23.2025) as well as future lectures.
 
 ```bash
-wdm-streamlit-nuggets/
+streamlit/
+dropdown-full-app.py
 ├── nuggets/
 │   ├── 01-write.py
 │   ├── 02-file-reader.py
