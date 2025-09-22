@@ -218,7 +218,7 @@ def run_simulation(N, tEnd, dt, M, R, h, k, nu, plot_every):
 
 
 ## Title displayed on webapp first
-st.title('''This is a simple web app built to simulate a star using Smothed Particle Hydrodynamics''')
+st.title('''This is a simple web app built to simulate a star using Smoothed Particle Hydrodynamics''')
 
 ## Write some descriptive text about what your web app does using st.write() or st.markdown()
 st.markdown('### Create Your Own Smoothed-Particle Hydrodynamics Simulation - Philip Mocz @PMocz - Princeton University')
