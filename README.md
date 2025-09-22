@@ -15,3 +15,23 @@ Directory containing simple apps demonstrating some of the many capabilities off
 * mass_radius.py - Simple streamlit app to display static figures. In this case, display the Mass-Radius relation and Pressure-Density Hugoniot of specific elements
 * pic-streamlit.py - App to demonstrate how to include simulation code into the streamlit app. In this case, it is a 1D plasma instability simulation.
 * sph-streamlit.py - App to demonstrate how to include simulation code into the streamlit app. In this case, it is a Smoothed-Particle Hydrodynamics simulation of a collapsing star. 
+
+
+
+# Project Directory Structure
+
+The following is the directory structure for the `wdm-streamlit-nuggets` repository, showcasing an organized layout for Streamlit applications:
+
+```bash
+wdm-streamlit-nuggets/
+├── nuggets/
+│   ├── 01-file-reader.py
+│   ├── 02-plotly-3d.py
+│   ├── 03-file-saver.py
+│   ├── 04-tabs-sidebar.py
+│   ├── 05-ode-solver.py
+│   ├── 06-parameter-sweep.py
+│   ├── 07-multiformat-files.py
+│   └── 08-session-state.py
+├── homework/
+└── combined-examples/
